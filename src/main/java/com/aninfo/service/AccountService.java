@@ -57,12 +57,32 @@ public class AccountService {
         if (sum <= 0) {
             throw new DepositNegativeSumException("Cannot deposit negative sums");
         }
-
+        Double bonus = 0.0;
+        if (sum >= 2000){
+            bonus = sum * 0.1;
+        }
+        bonus = 500 < bonus ? 500 : bonus;
         Account account = accountRepository.findAccountByCbu(cbu);
-        account.setBalance(account.getBalance() + sum);
+        account.setBalance(account.getBalance() + sum + bonus);
         accountRepository.save(account);
 
         return account;
+    }
+
+    @Transactional
+    public Account transaction(Long deliverer, Long receiver, Double sum) {
+
+        if (sum <= 0) {
+            throw new DepositNegativeSumException("Cannot deposit negative sums");
+        }
+
+        try {
+            withdraw(deliverer, sum);
+        } catch (InsufficientFundsException e) {
+            throw new InsufficientFundsException("Insufficient funds");
+        }
+        deposit(receiver, sum);
+        return accountRepository.findAccountByCbu(deliverer);
     }
 
 }

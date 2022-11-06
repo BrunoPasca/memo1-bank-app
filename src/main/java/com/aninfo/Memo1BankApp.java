@@ -75,12 +75,17 @@ public class Memo1BankApp {
 		return accountService.deposit(cbu, sum);
 	}
 
+	@PostMapping("/accounts/{cbu}/transaction")
+	public Account deposit(@PathVariable Long cbu, @RequestParam Long receiver, @RequestParam Double sum) {
+		return accountService.transaction(cbu, receiver, sum);
+	}
+
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
-			.select()
-			.apis(RequestHandlerSelectors.any())
-			.paths(PathSelectors.any())
-			.build();
+				.select()
+				.apis(RequestHandlerSelectors.any())
+				.paths(PathSelectors.any())
+				.build();
 	}
 }
