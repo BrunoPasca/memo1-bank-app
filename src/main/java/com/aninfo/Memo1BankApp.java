@@ -76,7 +76,7 @@ public class Memo1BankApp {
 	}
 
 	@PostMapping("/accounts/{cbu}/transaction")
-	public Account deposit(@PathVariable Long cbu, @RequestParam Long receiver, @RequestParam Double sum) {
+	public Account transfer(@PathVariable Long cbu, @RequestParam Long receiver, @RequestParam Double sum) {
 		return accountService.transaction(cbu, receiver, sum);
 	}
 
